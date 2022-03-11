@@ -1,3 +1,5 @@
+import axios from "axios"
+
 const Card = (article) => {
   // TASK 5
   // ---------------------
@@ -17,6 +19,34 @@ const Card = (article) => {
   //   </div>
   // </div>
   //
+
+  const card = document.createElement('div')
+  const headLine = document.createElement('div')
+  const author = document.createElement('div')
+  const imgContainer = document.createElement('div')
+  const image = document.createElement('img')
+  const name = document.createElement('span')
+  
+  card.classList.add('card')
+  headLine.classList.add('headline')
+  author.classList.add('author')
+  imgContainer.classList.add('img-container')
+  
+  headLine.textContent = article.headline
+  image.src = article.authorPhoto
+  name.textContent = article.authorName
+
+  card.appendChild(headLine)
+  card.appendChild(author)
+  author.appendChild(imgContainer)
+  author.appendChild(name)
+  imgContainer.appendChild(image)
+
+  card.addEventListener('click',() => {
+    console.log(article.headline)
+  })
+  
+  return card
 }
 
 const cardAppender = (selector) => {
@@ -28,6 +58,36 @@ const cardAppender = (selector) => {
   // Create a card from each and every article object in the response, using the Card component.
   // Append each card to the element in the DOM that matches the selector passed to the function.
   //
+  axios.get(`http://localhost:5000/api/articles`)
+  .then(res => {
+    //console.log(res.data.articles.javascript.length)
+    const javascriptArray = res.data.articles.javascript
+    javascriptArray.forEach(article => {
+      document.querySelector(selector)
+      .appendChild(Card(article))
+    })
+    const bootstrapArray = res.data.articles.bootstrap
+    bootstrapArray.forEach(article => {
+      document.querySelector(selector)
+      .appendChild(Card(article))
+    })
+    const technologyArray = res.data.articles.technology
+    technologyArray.forEach(article => {
+      document.querySelector(selector)
+      .appendChild(Card(article))
+    })
+    const jqueryArray = res.data.articles.jquery
+    jqueryArray.forEach(article => {
+      document.querySelector(selector)
+      .appendChild(Card(article))
+    })
+    const nodeArray = res.data.articles.node
+    nodeArray.forEach(article => {
+      document.querySelector(selector)
+      .appendChild(Card(article))
+    })
+
+  })
 }
 
 export { Card, cardAppender }
